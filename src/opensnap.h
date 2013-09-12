@@ -26,7 +26,6 @@ typedef struct
     oRectangle *screens;
 } screens;
 
-
 const char *SCRIPT_NAMES[] =
 {
     0,

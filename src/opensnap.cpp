@@ -118,7 +118,7 @@ int main(int argc, char **argv)
             else
             {
                 // check if we are dragging window
-                if (!isdrag && isTitlebarHit(dsp, &mousepos))
+                if (!isdrag && (mousepos.state & 8 || isTitlebarHit(dsp, &mousepos)))
                     isdrag = 1;
 
                 action = 0;
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
             printf("action is: %d, isdrag is: %d\n", action, isdrag);
 
         // if there is no button pressed and we was dragging window
-        if (mousepos.state == 16 && isdrag)
+        if (isdrag && (mousepos.state == 16 || mousepos.state == 24))
         {
             // if there is action to execute
             if (action)
