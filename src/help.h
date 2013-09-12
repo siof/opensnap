@@ -1,4 +1,5 @@
-void printHelp(){
+void printHelp()
+{
     printf("Usage: opensnap <OPTION>\n");
     printf("\n");
     printf("Options:\n");

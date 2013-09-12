@@ -5,27 +5,30 @@
 #define HIT_BOTTOM 4
 #define MY_MAXPATH 2048
 
-
-typedef struct {
+typedef struct
+{
     int x;
     int y;
     int state;
 } mousestate;
 
-typedef struct {
+typedef struct
+{
     int x;
     int y;
     int width;
     int height;
 } oRectangle;
 
-typedef struct {
+typedef struct
+{
     int amount;
     oRectangle *screens;
 } screens;
 
 
-const char *SCRIPT_NAMES[] = {
+const char *SCRIPT_NAMES[] =
+{
     0,
     "hit_top",
     "hit_left",
