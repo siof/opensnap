@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1378845892 source:/home/gareth/projekty/opensnap/src/opensnap.cpp
+1378997847 source:/home/gareth/projekty/opensnap/src/opensnap.cpp
 	<stdio.h>
 	<X11/Xlib.h>
 	<gtk/gtk.h>
@@ -192,7 +192,7 @@
 
 1370808951 /usr/include/bits/stdio-ldbl.h
 
-1375518728 /usr/include/X11/Xlib.h
+1378990515 /usr/include/X11/Xlib.h
 	<sys/types.h>
 	<stdint.h>
 	<X11/X.h>
@@ -2861,5 +2861,5 @@
 
 1378844379 /home/gareth/projekty/opensnap/src/help.h
 
-1378844440 /home/gareth/projekty/opensnap/src/version.h
+1378987288 /home/gareth/projekty/opensnap/src/version.h
 

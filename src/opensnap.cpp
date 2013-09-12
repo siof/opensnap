@@ -27,7 +27,6 @@ int main(int argc, char **argv)
     int action = 0;
     int verbose = 0;
     int isdrag = 0;
-    int isinitialclick = 1;
     int offset = 10;
     mousestate mousepos;
     mousestate relativeMousepos;
@@ -51,9 +50,9 @@ int main(int argc, char **argv)
 
     int opt = 0;
 
-    while((opt = getopt_long(argc, argv, "c:o:divVh", longopts, NULL)) != -1)
+    while ((opt = getopt_long(argc, argv, "c:o:divVh", longopts, NULL)) != -1)
     {
-        switch(opt)
+        switch (opt)
         {
             case 'c':
                 strncpy(configbase, optarg, MY_MAXPATH);
@@ -87,20 +86,27 @@ int main(int argc, char **argv)
         }
     }
 
+    int scrnn;
+
     while(1)
     {
+        // get mouse position
         getMousePosition(dsp, &event, &mousepos);
-        int scrnn;
+
+        // get current screen id
         scrnn = gdk_screen_get_monitor_at_point(gdk_screen_get_default(), mousepos.x, mousepos.y);
-        //make mouse coordinates relative to screen
+
+        // make mouse coordinates relative to screen
         relativeMousepos.x = mousepos.x - scrinfo.screens[scrnn].x;
         relativeMousepos.y = mousepos.y - scrinfo.screens[scrnn].y;
 
         if (verbose)
             printf("Mouse Coordinates: %d %d %d\n", mousepos.x, mousepos.y, mousepos.state);
 
-        if ((mousepos.state & LEFTCLICK) == LEFTCLICK)
+        // if we are holding left mouse button
+        if (mousepos.state & LEFTCLICK)
         {
+            // check positions and set proper action for it
             if (relativeMousepos.y <= offset)
                 action = HIT_TOP;
             else if (relativeMousepos.x <= offset)
@@ -111,45 +117,44 @@ int main(int argc, char **argv)
                 action = HIT_BOTTOM;
             else
             {
-                if (!isdrag && isinitialclick)
-                {
-                    if (isTitlebarHit(dsp, &mousepos))
-                        isdrag = 1;
-                }
+                // check if we are dragging window
+                if (!isdrag && isTitlebarHit(dsp, &mousepos))
+                    isdrag = 1;
 
                 action = 0;
             }
-
-            isinitialclick = false;
         }
 
         if (verbose)
             printf("action is: %d, isdrag is: %d\n", action, isdrag);
 
-        if ((16 & mousepos.state) == mousepos.state && isdrag)
+        // if there is no button pressed and we was dragging window
+        if (mousepos.state == 16 && isdrag)
         {
+            // if there is action to execute
             if (action)
             {
+                // get windows
                 getFocusedWindow(dsp, &activeWindow);
                 findParentWindow(dsp, &activeWindow, &parentWin);
 
                 if (verbose)
                     printf("Running script: %s", SCRIPT_NAMES[action]);
 
+                // prepare script to launch
                 sprintf(launch, "/bin/sh %s/%s %lu %i %i %i %i", configbase, SCRIPT_NAMES[action], parentWin,
                         scrinfo.screens[scrnn].width, scrinfo.screens[scrnn].height, scrinfo.screens[scrnn].x, scrinfo.screens[scrnn].y);
 
+                // and launch it
                 system(launch);
             }
 
             action = 0;
         }
 
-        if ((LEFTCLICK & mousepos.state) != LEFTCLICK)
-        {
+        // if there is no left mouse button pressed we aren't dragging anything
+        if (!(LEFTCLICK & mousepos.state))
             isdrag = 0;
-            isinitialclick = 1;
-        }
 
         usleep(10000);
     }
