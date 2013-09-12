@@ -99,7 +99,7 @@ int main(int argc, char **argv)
         if (verbose)
             printf("Mouse Coordinates: %d %d %d\n", mousepos.x, mousepos.y, mousepos.state);
 
-        if (mousepos.state & LEFTCLICK)
+        if ((mousepos.state & LEFTCLICK) == LEFTCLICK)
         {
             if (relativeMousepos.y <= offset)
                 action = HIT_TOP;
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
         if (verbose)
             printf("action is: %d, isdrag is: %d\n", action, isdrag);
 
-        if ((16 & mousepos.state) && isdrag)
+        if ((16 & mousepos.state) == mousepos.state && isdrag)
         {
             if (action)
             {
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
             action = 0;
         }
 
-        if (LEFTCLICK & mousepos.state)
+        if ((LEFTCLICK & mousepos.state) != LEFTCLICK)
         {
             isdrag = 0;
             isinitialclick = 1;
